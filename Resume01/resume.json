@@ -1,41 +1,101 @@
 {
-  "basics": {
-    "name": "Alex Mercer",
-    "label": "Full Stack Developer",
-    "email": "alex.mercer@example.com",
-    "phone": "(555) 019-2834",
-    "website": "https://alexmercer.dev",
-    "summary": "Results-driven developer with 5+ years of experience building scalable web applications. Passionate about clean code, UX performance, and modern JavaScript frameworks."
+  "name": "Will Tribianni",
+  "title": "Theater Actor",
+  "summary": "Experienced actor, aiming to bring depth and dynamism to the Night Light Theater's adaptation of 'A Clockwork Orange'. Recipient of the 'Best Supporting Actor' and 'Rising Star' awards. Renowned for captivating audiences with versatile performances and collaborating effectively with directors and co-actors. Eager to merge energy, passion, and a nuanced understanding of human emotions into every performance.",
+  "contact": {
+    "email": "will@novoresume.com",
+    "phone": "123 444 5555",
+    "location": "New York City, NY",
+    "instagram": "instagram.com/will.tribianni"
   },
-  "skills": ["JavaScript (ES6+)", "TypeScript", "React", "Node.js", "HTML5/CSS3", "PostgreSQL", "Git", "Docker"],
-  "work": [
+  "workExperience": [
     {
-      "company": "TechCorp Solutions",
-      "position": "Senior Frontend Engineer",
-      "startDate": "2023",
-      "endDate": "Present",
-      "highlights": [
-        "Architected and deployed a micro-frontend architecture reducing load times by 40%.",
-        "Mentored 4 junior developers and established team-wide code review standards."
+      "role": "Supporting & Lead Actor",
+      "company": "Manhattan Mirage Playhouse",
+      "period": "04/2022 - Present",
+      "bullets": [
+        "Won the \"Best Supporting Actor\" award at the National Theater Awards.",
+        "Played a pivotal role in the critically acclaimed play \"Modern Times,\" which saw a sold-out run for three consecutive months.",
+        "Collaborated with lead actors and the director to adapt script changes, enhancing character depth and audience engagement.",
+        "Received a standing ovation for the emotional performance in the play \"The Echoes of Despair,\" contributing to its extended run.",
+        "Successfully portrayed multiple characters in the anthology play \"Kaleidoscope Nights,\" showcasing versatility and range and leading to a 20% uptick in ticket sales.",
+        "Mentored three aspiring actors, guiding them to deliver memorable performances in their debut roles."
       ]
     },
     {
-      "company": "WebCraft Agency",
-      "position": "Full Stack Developer",
-      "startDate": "2021",
-      "endDate": "2023",
-      "highlights": [
-        "Built responsive client web applications using React and Node.js.",
-        "Integrated third-party APIs and payment gateways (Stripe, PayPal)."
+      "role": "Youth Acting Coach",
+      "company": "The Salty Smile Drama Center",
+      "period": "05/2019 - 03/2022",
+      "bullets": [
+        "Designed and implemented a comprehensive acting curriculum tailored for youths aged 8-16.",
+        "Led weekly acting workshops focusing on foundational acting techniques, character development, and scene study.",
+        "Coordinated and directed annual youth theater productions, managing casting, rehearsals, and performance logistics.",
+        "Managed class schedules, and attendance records, and coordinated with the administrative team for space and equipment requirements."
       ]
     }
   ],
+  "workshops": [
+    {
+      "title": "Improvisation Workshop",
+      "instructor": "Instructor: Rachel Reynard",
+      "date": "09/2021",
+      "location": "New York Dramatic Arts Retreat, New York, NY"
+    },
+    {
+      "title": "Voice and Diction Training",
+      "instructor": "Instructor: Gunter Martinez",
+      "date": "03/2021",
+      "location": "London Theater Intensive, London, UK"
+    },
+    {
+      "title": "Scene Study & Character Development",
+      "instructor": "Instructor: Dr. Chandler Singh",
+      "date": "02/2019",
+      "location": "London Theater Intensive, London, UK"
+    }
+  ],
+  "hardSkills": [
+    "Vocal modulation",
+    "Improvisation",
+    "Breath control",
+    "Physical characterization",
+    "Accent acquisition",
+    "Stage fighting",
+    "Dance",
+    "Theatrical stage presence",
+    "Monologue mastery",
+    "Scene Study"
+  ],
+  "softSkills": [
+    "Empathy",
+    "Teamwork",
+    "Memory retention",
+    "Creativity",
+    "Attention to detail"
+  ],
   "education": [
     {
-      "institution": "State University of Technology",
-      "area": "Computer Science",
-      "studyType": "B.S.",
-      "endDate": "2021"
+      "degree": "BFA Theater Arts & Performance Studies",
+      "institution": "Royal Academy of Dramatic Art",
+      "location": "London, UK"
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "level": "Native or Bilingual Proficiency"
+    },
+    {
+      "language": "Italian",
+      "level": "Native or Bilingual Proficiency"
+    },
+    {
+      "language": "Spanish",
+      "level": "Full Professional Proficiency"
+    },
+    {
+      "language": "French",
+      "level": "Full Professional Proficiency"
     }
   ]
 }
