@@ -1,0 +1,1 @@
+HTML Resume Template with json configuration file
