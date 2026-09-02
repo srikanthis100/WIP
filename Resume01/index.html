@@ -3,112 +3,414 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Resume</title>
+  <title>Will Tribianni - Resume</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: #f4f4f5; padding: 20px; }
-    .resume-card { max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    
-    header { border-bottom: 2px solid #eaeaea; padding-bottom: 20px; margin-bottom: 20px; }
-    h1 { font-size: 2rem; color: #111; }
-    .title { font-size: 1.1rem; color: #666; font-weight: 500; }
-    .contact-info { margin-top: 10px; font-size: 0.9rem; color: #444; display: flex; gap: 15px; flex-wrap: wrap; }
-    
-    section { margin-bottom: 25px; }
-    h2 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; color: #2563eb; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
-    
-    .skills-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
-    .skills-list li { background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: 500; }
-    
-    .item { margin-bottom: 15px; }
-    .item-header { display: flex; justify-content: space-between; font-weight: bold; }
-    .item-sub { color: #666; font-style: italic; font-size: 0.9rem; margin-bottom: 5px; }
-    ul.highlights { margin-left: 20px; font-size: 0.95rem; }
+    :root {
+      --navy: #1f354d;
+      --teal: #3b949e;
+      --light-bg: #f5f6f8;
+      --text-dark: #222222;
+      --text-muted: #666666;
+      --pill-bg: #8c9fae;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background-color: #e5e5e5;
+      color: var(--text-dark);
+      line-height: 1.4;
+      padding: 20px;
+    }
+
+    .resume-container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: #ffffff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    /* Header Styling */
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 24px 30px;
+      position: relative;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--teal);
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .header-text .subtitle {
+      color: var(--teal);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .header-text .summary {
+      font-size: 0.82rem;
+      color: #d1d9e0;
+      line-height: 1.45;
+    }
+
+    .contact-bar {
+      background: var(--teal);
+      margin: 0 -30px -24px -30px;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .contact-item i {
+      font-size: 0.95rem;
+    }
+
+    /* Main Grid Layout */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+    }
+
+    .left-column {
+      padding: 24px 24px 24px 30px;
+      border-right: 1px solid #e0e0e0;
+    }
+
+    .right-column {
+      padding: 24px 30px 24px 20px;
+      background-color: #fafafa;
+    }
+
+    /* Section Headers */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--navy);
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+    }
+
+    .section-title i {
+      background: var(--navy);
+      color: white;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+    }
+
+    section {
+      margin-bottom: 22px;
+    }
+
+    /* Work Experience */
+    .job-item {
+      margin-bottom: 16px;
+    }
+
+    .job-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: #111;
+    }
+
+    .job-company {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .job-period {
+      font-size: 0.75rem;
+      color: var(--teal);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .bullet-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 14px;
+      font-size: 0.82rem;
+      color: #444;
+      margin-bottom: 5px;
+      line-height: 1.4;
+    }
+
+    .bullet-list li::before {
+      content: "•";
+      color: var(--teal);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    /* Workshops */
+    .workshop-item {
+      margin-bottom: 12px;
+    }
+
+    .workshop-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #111;
+    }
+
+    .workshop-instructor {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .workshop-meta {
+      font-size: 0.75rem;
+      color: #888;
+      font-style: italic;
+    }
+
+    /* Right Column Items */
+    .skill-list {
+      list-style: none;
+    }
+
+    .skill-list li {
+      font-size: 0.85rem;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .soft-skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .soft-skill-pill {
+      background: var(--pill-bg);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .edu-degree {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #111;
+    }
+
+    .edu-school {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #333;
+    }
+
+    .edu-location {
+      font-size: 0.75rem;
+      color: #888;
+      font-style: italic;
+    }
+
+    .lang-item {
+      margin-bottom: 8px;
+    }
+
+    .lang-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #111;
+    }
+
+    .lang-level {
+      font-size: 0.75rem;
+      color: #777;
+      font-style: italic;
+    }
 
     @media print {
-      body { background: #fff; padding: 0; }
-      .resume-card { box-shadow: none; padding: 0; }
+      body {
+        background: white;
+        padding: 0;
+      }
+      .resume-container {
+        box-shadow: none;
+      }
     }
   </style>
 </head>
 <body>
 
-  <article class="resume-card" id="resume">
-    <p>Loading resume data...</p>
-  </article>
+  <div class="resume-container" id="resume">
+    <!-- Rendered via JavaScript from resume.json -->
+  </div>
 
   <script>
-    async function loadResume() {
+    async function renderResume() {
       try {
         const response = await fetch('resume.json');
-        if (!response.ok) throw new Error('Failed to fetch resume JSON');
+        if (!response.ok) throw new Error('Could not load resume.json');
         const data = await response.json();
-        
-        renderResume(data);
-      } catch (error) {
-        document.getElementById('resume').innerHTML = `<p style="color:red;">Error loading resume data. (Note: Run via a local server like Live Server to satisfy browser fetch/CORS policies).</p>`;
-        console.error(error);
+
+        const container = document.getElementById('resume');
+        container.innerHTML = `
+          <header>
+            <div class="header-top">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="${data.name}" class="profile-img">
+              <div class="header-text">
+                <h1>${data.name}</h1>
+                <div class="subtitle">${data.title}</div>
+                <p class="summary">${data.summary}</p>
+              </div>
+            </div>
+            <div class="contact-bar">
+              <div class="contact-item"><i class="fa-solid fa-envelope"></i> ${data.contact.email}</div>
+              <div class="contact-item"><i class="fa-solid fa-phone"></i> ${data.contact.phone}</div>
+              <div class="contact-item"><i class="fa-solid fa-location-dot"></i> ${data.contact.location}</div>
+              <div class="contact-item"><i class="fa-brands fa-instagram"></i> ${data.contact.instagram}</div>
+            </div>
+          </header>
+
+          <div class="content-grid">
+            <div class="left-column">
+              <section>
+                <div class="section-title">
+                  <i class="fa-solid fa-briefcase"></i>
+                  <span>Work Experience</span>
+                </div>
+                ${data.workExperience.map(job => `
+                  <div class="job-item">
+                    <div class="job-title">${job.role}</div>
+                    <div class="job-company">${job.company}</div>
+                    <div class="job-period">${job.period}</div>
+                    <ul class="bullet-list">
+                      ${job.bullets.map(b => `<li>${b}</li>`).join('')}
+                    </ul>
+                  </div>
+                `).join('')}
+              </section>
+
+              <section>
+                <div class="section-title">
+                  <i class="fa-solid fa-masks-theater"></i>
+                  <span>Workshops & Training Camps</span>
+                </div>
+                ${data.workshops.map(ws => `
+                  <div class="workshop-item">
+                    <div class="workshop-title">${ws.title}</div>
+                    <div class="workshop-instructor">${ws.instructor}</div>
+                    <div class="workshop-meta">${ws.date}</div>
+                    <div class="workshop-meta">${ws.location}</div>
+                  </div>
+                `).join('')}
+              </section>
+            </div>
+
+            <div class="right-column">
+              <section>
+                <div class="section-title">
+                  <i class="fa-solid fa-brain"></i>
+                  <span>Hard Skills</span>
+                </div>
+                <ul class="skill-list">
+                  ${data.hardSkills.map(skill => `<li>${skill}</li>`).join('')}
+                </ul>
+              </section>
+
+              <section>
+                <div class="section-title">
+                  <i class="fa-solid fa-lightbulb"></i>
+                  <span>Soft Skills</span>
+                </div>
+                <div class="soft-skills-container">
+                  ${data.softSkills.map(skill => `<span class="soft-skill-pill">${skill}</span>`).join('')}
+                </div>
+              </section>
+
+              <section>
+                <div class="section-title">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                  <span>Education</span>
+                </div>
+                ${data.education.map(edu => `
+                  <div class="edu-item">
+                    <div class="edu-degree">${edu.degree}</div>
+                    <div class="edu-school">${edu.institution}</div>
+                    <div class="edu-location">${edu.location}</div>
+                  </div>
+                `).join('')}
+              </section>
+
+              <section>
+                <div class="section-title">
+                  <i class="fa-solid fa-language"></i>
+                  <span>Languages</span>
+                </div>
+                ${data.languages.map(lang => `
+                  <div class="lang-item">
+                    <div class="lang-name">${lang.language}</div>
+                    <div class="lang-level">${lang.level}</div>
+                  </div>
+                `).join('')}
+              </section>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        document.getElementById('resume').innerHTML = `<p style="color:red; padding:20px;">Failed to load resume data: ${err.message}</p>`;
       }
     }
 
-    function renderResume(data) {
-      const container = document.getElementById('resume');
-      
-      container.innerHTML = `
-        <header>
-          <h1>${data.basics.name}</h1>
-          <div class="title">${data.basics.label}</div>
-          <div class="contact-info">
-            <span>${data.basics.email}</span> |
-            <span>${data.basics.phone}</span> |
-            <a href="${data.basics.website}" target="_blank">${data.basics.website}</a>
-          </div>
-        </header>
-
-        <section>
-          <h2>Summary</h2>
-          <p>${data.basics.summary}</p>
-        </section>
-
-        <section>
-          <h2>Skills</h2>
-          <ul class="skills-list">
-            ${data.skills.map(skill => `<li>${skill}</li>`).join('')}
-          </ul>
-        </section>
-
-        <section>
-          <h2>Experience</h2>
-          ${data.work.map(job => `
-            <div class="item">
-              <div class="item-header">
-                <span>${job.position}</span>
-                <span>${job.startDate} – ${job.endDate}</span>
-              </div>
-              <div class="item-sub">${job.company}</div>
-              <ul class="highlights">
-                ${job.highlights.map(h => `<li>${h}</li>`).join('')}
-              </ul>
-            </div>
-          `).join('')}
-        </section>
-
-        <section>
-          <h2>Education</h2>
-          ${data.education.map(edu => `
-            <div class="item">
-              <div class="item-header">
-                <span>${edu.studyType} in ${edu.area}</span>
-                <span>${edu.endDate}</span>
-              </div>
-              <div class="item-sub">${edu.institution}</div>
-            </div>
-          `).join('')}
-        </section>
-      `;
-    }
-
-    loadResume();
+    renderResume();
   </script>
 </body>
 </html>
