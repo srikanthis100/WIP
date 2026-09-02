@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Will Tribianni - Resume</title>
+  <title>Dynamic Resume</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -297,26 +297,35 @@
   <script>
     async function renderResume() {
       try {
-        const response = await fetch('resume.json');
-        if (!response.ok) throw new Error('Could not load resume.json');
+        const response = await fetch('resume.json?v=' + new Date().getTime());
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         const data = await response.json();
+
+        const contact = data.contact || data.basics || {};
+        const email = contact.email || '';
+        const phone = contact.phone || '';
+        const location = contact.location || '';
+        const instagram = contact.instagram || contact.website || '';
+        
+        // Fallback default avatar if profileImage isn't supplied in JSON
+        const profileImage = data.profileImage || 'https://via.placeholder.com/100';
 
         const container = document.getElementById('resume');
         container.innerHTML = `
           <header>
             <div class="header-top">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="${data.name}" class="profile-img">
+              <img src="${profileImage}" alt="${data.name || ''}" class="profile-img">
               <div class="header-text">
-                <h1>${data.name}</h1>
-                <div class="subtitle">${data.title}</div>
-                <p class="summary">${data.summary}</p>
+                <h1>${data.name || contact.name || ''}</h1>
+                <div class="subtitle">${data.title || contact.label || ''}</div>
+                <p class="summary">${data.summary || contact.summary || ''}</p>
               </div>
             </div>
             <div class="contact-bar">
-              <div class="contact-item"><i class="fa-solid fa-envelope"></i> ${data.contact.email}</div>
-              <div class="contact-item"><i class="fa-solid fa-phone"></i> ${data.contact.phone}</div>
-              <div class="contact-item"><i class="fa-solid fa-location-dot"></i> ${data.contact.location}</div>
-              <div class="contact-item"><i class="fa-brands fa-instagram"></i> ${data.contact.instagram}</div>
+              ${email ? `<div class="contact-item"><i class="fa-solid fa-envelope"></i> ${email}</div>` : ''}
+              ${phone ? `<div class="contact-item"><i class="fa-solid fa-phone"></i> ${phone}</div>` : ''}
+              ${location ? `<div class="contact-item"><i class="fa-solid fa-location-dot"></i> ${location}</div>` : ''}
+              ${instagram ? `<div class="contact-item"><i class="fa-brands fa-instagram"></i> ${instagram}</div>` : ''}
             </div>
           </header>
 
@@ -327,18 +336,19 @@
                   <i class="fa-solid fa-briefcase"></i>
                   <span>Work Experience</span>
                 </div>
-                ${data.workExperience.map(job => `
+                ${(data.workExperience || data.work || []).map(job => `
                   <div class="job-item">
-                    <div class="job-title">${job.role}</div>
-                    <div class="job-company">${job.company}</div>
-                    <div class="job-period">${job.period}</div>
+                    <div class="job-title">${job.role || job.position || ''}</div>
+                    <div class="job-company">${job.company || ''}</div>
+                    <div class="job-period">${job.period || (job.startDate ? `${job.startDate} - ${job.endDate}` : '')}</div>
                     <ul class="bullet-list">
-                      ${job.bullets.map(b => `<li>${b}</li>`).join('')}
+                      ${(job.bullets || job.highlights || []).map(b => `<li>${b}</li>`).join('')}
                     </ul>
                   </div>
                 `).join('')}
               </section>
 
+              ${data.workshops ? `
               <section>
                 <div class="section-title">
                   <i class="fa-solid fa-masks-theater"></i>
@@ -353,6 +363,7 @@
                   </div>
                 `).join('')}
               </section>
+              ` : ''}
             </div>
 
             <div class="right-column">
@@ -362,10 +373,11 @@
                   <span>Hard Skills</span>
                 </div>
                 <ul class="skill-list">
-                  ${data.hardSkills.map(skill => `<li>${skill}</li>`).join('')}
+                  ${(data.hardSkills || data.skills || []).map(skill => `<li>${skill}</li>`).join('')}
                 </ul>
               </section>
 
+              ${data.softSkills ? `
               <section>
                 <div class="section-title">
                   <i class="fa-solid fa-lightbulb"></i>
@@ -375,21 +387,23 @@
                   ${data.softSkills.map(skill => `<span class="soft-skill-pill">${skill}</span>`).join('')}
                 </div>
               </section>
+              ` : ''}
 
               <section>
                 <div class="section-title">
                   <i class="fa-solid fa-graduation-cap"></i>
                   <span>Education</span>
                 </div>
-                ${data.education.map(edu => `
+                ${(data.education || []).map(edu => `
                   <div class="edu-item">
-                    <div class="edu-degree">${edu.degree}</div>
-                    <div class="edu-school">${edu.institution}</div>
-                    <div class="edu-location">${edu.location}</div>
+                    <div class="edu-degree">${edu.degree || `${edu.studyType || ''} in ${edu.area || ''}`}</div>
+                    <div class="edu-school">${edu.institution || ''}</div>
+                    <div class="edu-location">${edu.location || edu.endDate || ''}</div>
                   </div>
                 `).join('')}
               </section>
 
+              ${data.languages ? `
               <section>
                 <div class="section-title">
                   <i class="fa-solid fa-language"></i>
@@ -402,6 +416,7 @@
                   </div>
                 `).join('')}
               </section>
+              ` : ''}
             </div>
           </div>
         `;
