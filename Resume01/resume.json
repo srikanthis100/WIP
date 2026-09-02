@@ -1,0 +1,41 @@
+{
+  "basics": {
+    "name": "Alex Mercer",
+    "label": "Full Stack Developer",
+    "email": "alex.mercer@example.com",
+    "phone": "(555) 019-2834",
+    "website": "https://alexmercer.dev",
+    "summary": "Results-driven developer with 5+ years of experience building scalable web applications. Passionate about clean code, UX performance, and modern JavaScript frameworks."
+  },
+  "skills": ["JavaScript (ES6+)", "TypeScript", "React", "Node.js", "HTML5/CSS3", "PostgreSQL", "Git", "Docker"],
+  "work": [
+    {
+      "company": "TechCorp Solutions",
+      "position": "Senior Frontend Engineer",
+      "startDate": "2023",
+      "endDate": "Present",
+      "highlights": [
+        "Architected and deployed a micro-frontend architecture reducing load times by 40%.",
+        "Mentored 4 junior developers and established team-wide code review standards."
+      ]
+    },
+    {
+      "company": "WebCraft Agency",
+      "position": "Full Stack Developer",
+      "startDate": "2021",
+      "endDate": "2023",
+      "highlights": [
+        "Built responsive client web applications using React and Node.js.",
+        "Integrated third-party APIs and payment gateways (Stripe, PayPal)."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "State University of Technology",
+      "area": "Computer Science",
+      "studyType": "B.S.",
+      "endDate": "2021"
+    }
+  ]
+}
