@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Planner & Pantry Tracker</title>
+  <style>
+    :root {
+      --bg-color: #121212; --card-bg: #1e1e1e; --text-color: #e0e0e0;
+      --text-bright: #ffffff; --text-muted: #888888; --border-color: #333333;
+      --primary-color: #00e676; --primary-text: #000000; --accent-color: #ffb74d; --danger-color: #cf6679;
+    }
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 16px; transition: background-color 0.4s, color 0.4s; }
+    .container { max-width: 480px; margin: 0 auto; }
+    .nav-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .nav-title { font-size: 16px; font-weight: bold; color: var(--text-bright); }
+    .nav-tabs { display: flex; gap: 4px; }
+    .card { background: var(--card-bg); border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-color); transition: background 0.4s, border-color 0.4s; }
+    .card.highlight { border: 2px solid var(--primary-color); }
+    .card.edit-card { border: 2px solid var(--accent-color); }
+    .meal-title { font-size: 18px; font-weight: bold; color: var(--text-bright); }
+    .badges-container { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .badge { font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
+    .badge.veg { background: #2e7d32; color: #fff; } .badge.non-veg { background: #c62828; color: #fff; } .badge.egg { background: #f57f17; color: #fff; }
+    .badge.tag { background: var(--border-color); color: var(--accent-color); font-weight: normal; text-transform: none; }
+    .badge.stock-full { background: #1b5e20; color: #a5d6a7; } .badge.stock-low { background: #f57f17; color: #fff; } .badge.stock-out { background: #c62828; color: #fff; }
+    .prep-note { font-size: 13px; color: var(--accent-color); background: rgba(255, 183, 77, 0.1); padding: 8px; border-radius: 6px; margin-top: 10px; }
+    button { background: var(--card-bg); color: var(--text-bright); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+    button.primary { background: var(--primary-color); color: var(--primary-text); font-weight: bold; border: none; }
+    button.warning { background: var(--accent-color); color: #000; font-weight: bold; border: none; }
+    button.danger { background: var(--danger-color); color: #000; font-weight: bold; border: none; }
+    button.small { padding: 4px 8px; font-size: 11px; }
+    button.active-tab { background: var(--primary-color); color: var(--primary-text); font-weight: bold; border: none; }
+    .section-title { font-size: 12px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px; }
+    .form-group { margin-bottom: 12px; } .form-group label { display: block; font-size: 12px; margin-bottom: 4px; color: var(--text-muted); }
+    .form-row { display: flex; gap: 8px; } .form-row .form-group { flex: 1; }
+    input, select { width: 100%; padding: 10px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-bright); border-radius: 6px; }
+    input[type="color"] { padding: 2px; height: 38px; cursor: pointer; }
+    .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+    .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+    .manage-item { padding: 10px 0; border-bottom: 1px solid var(--border-color); } .manage-item:last-child { border-bottom: none; }
+    .item-top { display: flex; justify-content: space-between; align-items: center; }
+    .card-actions { margin-top: 12px; display: flex; gap: 8px; }
+    .progress-bar-bg { background: var(--border-color); height: 6px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+    .fill-full { background: var(--primary-color); } .fill-low { background: var(--accent-color); } .fill-out { background: var(--danger-color); }
+    /* Collapsible Accordions */
+.accordion-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.accordion-header {
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: var(--text-bright);
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.accordion-header:after {
+  content: '▼';
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+.accordion-item.open .accordion-header:after {
+  transform: rotate(180deg);
+}
+.accordion-content {
+  display: none;
+  padding: 16px;
+  border-top: 1px solid var(--border-color);
+}
+.accordion-item.open .accordion-content {
+  display: block;
+}
+
+/* Checkbox Alignment Fix */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="nav-bar">
+    <div class="nav-title">🍽 Planner</div>
+    <div class="nav-tabs">
+      <button id="btnDash" class="active-tab" onclick="switchTab('dashboard')">🏠 Dash</button>
+      <button id="btnPantry" onclick="switchTab('pantry')">🧺 Pantry</button>
+      <button id="btnManage" onclick="switchTab('manage')">🍲 Meals</button>
+      <button id="btnSettings" onclick="switchTab('settings')">⚙️ Settings</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboardView">
+    <div class="section-title" id="activeSlotTitle">CURRENT MEAL</div>
+    <div class="card highlight">
+      <div class="meal-title" id="activeMealName">Loading...</div>
+      <div class="badges-container" id="activeBadgesContainer"></div>
+      <div id="activePrepNote" class="prep-note" style="display: none;"></div>
+      <div class="card-actions">
+        <button class="primary" onclick="markMealCookedBySlot(0)">✅ Cooked This</button>
+        <button onclick="shuffleMealBySlot(0)">🔀 Shuffle</button>
+      </div>
+    </div>
+    <div class="section-title">UPCOMING MEALS</div>
+    <div id="upcomingContainer"></div>
+  </div>
+
+  <!-- PANTRY -->
+  <div id="pantryView" style="display: none;">
+    <div class="section-title" id="pantryFormTitle">➕ ADD PANTRY ITEM</div>
+    <div class="card">
+      <input type="hidden" id="pantryItemId">
+      <div class="form-group"><label>Category</label><select id="pantryCategory" onchange="toggleCustomCategoryInput()"></select></div>
+      <div class="form-group" id="customCategoryGroup" style="display: none;"><label>Custom Category</label><input type="text" id="pantryCustomCategory"></div>
+      <div class="form-group"><label>Item Name</label><input type="text" id="pantryName"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Required Stock</label><input type="number" id="pantryRequired"></div>
+        <div class="form-group"><label>Available Stock</label><input type="number" id="pantryAvailable"></div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button class="primary" id="savePantryBtn" onclick="handlePantrySave()">Save Item</button>
+        <button id="cancelPantryBtn" style="display: none;" onclick="cancelPantryEdit()">Cancel</button>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <div class="section-title" style="margin:0;">🧺 PANTRY INVENTORY</div>
+      <select id="pantrySort" style="width: auto; padding: 4px;" onchange="renderPantryUI()">
+        <option value="urgency">Sort: Low Stock</option>
+        <option value="category">Sort: Category</option>
+        <option value="name">Sort: Name</option>
+      </select>
+    </div>
+    <div class="card" id="pantryItemList"></div>
+  </div>
+
+  <!-- MEALS MANAGE -->
+  <div id="manageView" style="display: none;">
+    <div id="editFormContainer" style="display: none;">
+      <div class="section-title">✏️ EDIT MEAL</div>
+      <div class="card edit-card">
+        <input type="hidden" id="editMealId">
+        <div class="form-group"><label>Meal Name</label><input type="text" id="editName"></div>
+        <div class="form-group"><label>Category</label><select id="editCategory"><option>Breakfast</option><option>Lunch</option><option>Dinner</option></select></div>
+        <div class="form-group"><label>Dietary Type</label><select id="editDiet"><option value="veg">Veg</option><option value="non-veg">Non-Veg</option><option value="egg">Egg</option></select></div>
+        <div class="form-group"><label>Tags (Comma separated)</label><input type="text" id="editTags"></div>
+        <div class="form-group"><label>Prep Note</label><input type="text" id="editPrep"></div>
+        <div style="display: flex; gap: 8px;"><button class="warning" onclick="handleFormUpdate()">Update</button><button onclick="cancelEdit()">Cancel</button></div>
+      </div>
+    </div>
+
+    <div id="addFormContainer">
+      <div class="section-title">➕ ADD NEW DISH</div>
+      <div class="card">
+        <div class="form-group"><label>Meal Name</label><input type="text" id="inputName"></div>
+        <div class="form-group"><label>Category</label><select id="inputCategory"><option>Breakfast</option><option>Lunch</option><option>Dinner</option></select></div>
+        <div class="form-group"><label>Dietary Type</label><select id="inputDiet"><option value="veg">Veg</option><option value="non-veg">Non-Veg</option><option value="egg">Egg</option></select></div>
+        <div class="form-group"><label>Tags (Comma separated)</label><input type="text" id="inputTags"></div>
+        <div class="form-group"><label>Prep Note</label><input type="text" id="inputPrep"></div>
+        <button class="primary" onclick="handleFormAdd()">Save Meal</button>
+      </div>
+    </div>
+
+    <div class="section-title">📖 ACTIVE MEALS</div><div class="card" id="activePoolList"></div>
+    <div class="section-title">📜 HISTORY LOG</div><div class="card" id="historyLogList"></div>
+    <div class="section-title">🗑 ARCHIVED MEALS</div><div class="card" id="archivedPoolList"></div>
+  </div>
+
+<!-- SETTINGS & THEMES -->
+<div id="settingsView" style="display: none;">
+
+  <!-- Theme Manager -->
+  <div class="accordion-item">
+    <button class="accordion-header" onclick="toggleAccordion(this)">🎨 Theme Manager</button>
+    <div class="accordion-content">
+      <div class="form-group">
+        <label>Theme Mode</label>
+        <select id="themeModeSelect" onchange="handleThemeModeChange(this.value)">
+          <option value="auto">Auto Meal-Time (Breakfast / Lunch / Dinner)</option>
+          <option value="manual">Manual Override</option>
+        </select>
+      </div>
+      <div id="autoThemeSettings">
+        <div class="form-group"><label>🌅 Breakfast (6 AM - 11 AM)</label><select id="themeBreakfastSelect" onchange="updateMealTimeTheme('Breakfast', this.value)"></select></div>
+        <div class="form-group"><label>☀️ Lunch (11 AM - 4 PM)</label><select id="themeLunchSelect" onchange="updateMealTimeTheme('Lunch', this.value)"></select></div>
+        <div class="form-group"><label>🌙 Dinner (4 PM - 6 AM)</label><select id="themeDinnerSelect" onchange="updateMealTimeTheme('Dinner', this.value)"></select></div>
+      </div>
+      <div id="manualThemeSettings" style="display: none;">
+        <div class="form-group"><label>Active Theme</label><select id="themeManualSelect" onchange="setManualTheme(this.value)"></select></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Themes -->
+  <div class="accordion-item">
+    <button class="accordion-header" onclick="toggleAccordion(this)">🖌️ Create / Edit Theme</button>
+    <div class="accordion-content">
+      <div class="form-group"><label>Select Base Theme</label><select id="themeEditorSelect" onchange="loadThemeIntoEditor(this.value)"></select></div>
+      <div class="form-group"><label>Theme Name</label><input type="text" id="themeEditName"></div>
+      <div class="form-row"><div class="form-group"><label>Background</label><input type="color" id="themeEditBg"></div><div class="form-group"><label>Card BG</label><input type="color" id="themeEditCardBg"></div></div>
+      <div class="form-row"><div class="form-group"><label>Primary Accent</label><input type="color" id="themeEditPrimary"></div><div class="form-group"><label>Secondary Accent</label><input type="color" id="themeEditAccent"></div></div>
+      <div class="form-row"><div class="form-group"><label>Text</label><input type="color" id="themeEditText"></div><div class="form-group"><label>Border</label><input type="color" id="themeEditBorder"></div></div>
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <button class="primary" onclick="saveCustomTheme()">💾 Save Theme</button>
+        <button class="danger" id="btnDeleteTheme" onclick="deleteCustomTheme()" style="display: none;">🗑 Delete Theme</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import / Export -->
+  <div class="accordion-item">
+    <button class="accordion-header" onclick="toggleAccordion(this)">📥 Import / Export Data</button>
+    <div class="accordion-content">
+      <div class="form-group"><label>Pantry CSV</label><input type="file" id="csvFileInput" accept=".csv"></div>
+      <button class="primary" onclick="importPantryCSV()">Import Pantry CSV</button>
+      <hr style="border:0; border-top: 1px solid var(--border-color); margin: 12px 0;">
+      <div class="form-group"><label>Meals CSV</label><input type="file" id="csvMealsFileInput" accept=".csv"></div>
+      <button class="primary" onclick="importMealsCSV()">Import Meals CSV</button>
+      <hr style="border:0; border-top: 1px solid var(--border-color); margin: 12px 0;">
+      <div style="display: flex; gap: 8px;">
+        <button onclick="exportPantryCSV()">Export Pantry CSV</button>
+        <button onclick="exportMealsCSV()">Export Meals CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wipe Data -->
+  <div class="accordion-item">
+    <button class="accordion-header" onclick="toggleAccordion(this)">⚠️ Wipe Data</button>
+    <div class="accordion-content">
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" id="chkResetPantry"> <span>Clear Pantry Data</span></label>
+        <label class="checkbox-item"><input type="checkbox" id="chkResetMeals"> <span>Clear Meals Data</span></label>
+        <label class="checkbox-item"><input type="checkbox" id="chkResetHistory"> <span>Clear Cooked History Log</span></label>
+      </div>
+      <button class="danger" onclick="executeTargetedReset()">Delete Selected Data</button>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+  const LOCAL_STORAGE_KEY = 'meal_planner_data_v1';
+  let currentTab = 'dashboard';
+
+  const DEFAULT_THEMES = {
+    'sunrise': { name: '🌅 Sunrise Citrus', bg: '#1f1610', cardBg: '#2a1f18', text: '#fce8d5', border: '#4a3425', primary: '#ff9800', primaryText: '#000', accent: '#ffd54f' },
+    'midday': { name: '☀️ Midday Forest', bg: '#0f1f17', cardBg: '#182b20', text: '#e8f5e9', border: '#2a4a37', primary: '#00e676', primaryText: '#000', accent: '#a7ffeb' },
+    'midnight': { name: '🌙 Midnight Obsidian', bg: '#121212', cardBg: '#1e1e1e', text: '#e0e0e0', border: '#333333', primary: '#7c4dff', primaryText: '#fff', accent: '#ff4081' }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    seedTestData();
+    applyActiveTheme();
+    renderDashboard();
+    setInterval(() => {
+      const data = loadLocalData();
+      if (data.settings.themeMode === 'auto') {
+        applyActiveTheme();
+        if (currentTab === 'dashboard') renderDashboard();
+      }
+    }, 60000);
+  });
+
+  function loadLocalData() {
+    const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+    const parsed = data ? JSON.parse(data) : {};
+    if (!parsed.settings) parsed.settings = { themeMode: 'auto', manualTheme: 'midnight', mealThemes: { Breakfast: 'sunrise', Lunch: 'midday', Dinner: 'midnight' } };
+    if (!parsed.customThemes) parsed.customThemes = {};
+    if (!parsed.meals) parsed.meals = [];
+    if (!parsed.history) parsed.history = [];
+    if (!parsed.pantry) parsed.pantry = [];
+    return parsed;
+  }
+
+  function saveLocalData(data) { localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data)); }
+
+  function seedTestData() {
+    const data = loadLocalData();
+    if (data.meals.length > 0) return;
+    data.meals = [
+      { id: 'm1', name: "Oatmeal & Berries", category: "Breakfast", dietType: "veg", tags: ["Quick"], prepNote: "", isArchived: false, timesCooked: 0 },
+      { id: 'm2', name: "Paneer Masala & Roti", category: "Dinner", dietType: "veg", tags: ["Festive"], prepNote: "Soak paneer", isArchived: false, timesCooked: 0 }
+    ];
+    data.pantry = [{ id: 'p1', category: 'General', name: "Rice", required: 1000, available: 500, isArchived: false }];
+    saveLocalData(data);
+  }
+
+  function getAllThemes() { return { ...DEFAULT_THEMES, ...(loadLocalData().customThemes || {}) }; }
+  function getActiveMealSlot() {
+    const h = new Date().getHours();
+    return (h >= 6 && h < 11) ? 'Breakfast' : (h >= 11 && h < 16) ? 'Lunch' : 'Dinner';
+  }
+
+  function applyActiveTheme() {
+  const data = loadLocalData();
+  const themes = getAllThemes();
+  let themeKey = 'midnight';
+
+  if (data.settings.themeMode === 'manual') {
+    themeKey = data.settings.manualTheme || 'midnight';
+  } else {
+    // Convert slot name to lower case to match saved settings keys reliably
+    const rawSlot = getActiveMealSlot(); // Returns 'Breakfast'
+    const slotKey = rawSlot.toLowerCase(); 
+    
+    // Check both lowercase and capitalized keys for backward compatibility
+    themeKey = (data.settings.mealThemes && (data.settings.mealThemes[slotKey] || data.settings.mealThemes[rawSlot]))
+      ? (data.settings.mealThemes[slotKey] || data.settings.mealThemes[rawSlot])
+      : 'sunrise'; // Fallback to sunrise for morning
+  }
+
+  const theme = themes[themeKey] || themes['sunrise'];
+  const root = document.documentElement;
+
+  root.style.setProperty('--bg-color', theme.bg);
+  root.style.setProperty('--card-bg', theme.cardBg);
+  root.style.setProperty('--text-color', theme.text);
+  root.style.setProperty('--text-bright', theme.text);
+  root.style.setProperty('--border-color', theme.border);
+  root.style.setProperty('--primary-color', theme.primary);
+  root.style.setProperty('--primary-text', theme.primaryText || '#000000');
+  root.style.setProperty('--accent-color', theme.accent);
+}
+
+
+  function renderThemeSettingsUI() {
+    const data = loadLocalData();
+    const themes = getAllThemes();
+    document.getElementById('themeModeSelect').value = data.settings.themeMode || 'auto';
+    document.getElementById('autoThemeSettings').style.display = data.settings.themeMode === 'auto' ? 'block' : 'none';
+    document.getElementById('manualThemeSettings').style.display = data.settings.themeMode === 'manual' ? 'block' : 'none';
+
+    populateDropdown('themeBreakfastSelect', themes, data.settings.mealThemes?.Breakfast || 'sunrise');
+    populateDropdown('themeLunchSelect', themes, data.settings.mealThemes?.Lunch || 'midday');
+    populateDropdown('themeDinnerSelect', themes, data.settings.mealThemes?.Dinner || 'midnight');
+    populateDropdown('themeManualSelect', themes, data.settings.manualTheme || 'midnight');
+    populateDropdown('themeEditorSelect', themes, '');
+    loadThemeIntoEditor(document.getElementById('themeEditorSelect').value);
+  }
+
+  function populateDropdown(id, themes, val) {
+    const el = document.getElementById(id); el.innerHTML = '';
+    Object.keys(themes).forEach(k => {
+      const opt = document.createElement('option');
+      opt.value = k; opt.innerText = themes[k].name;
+      if (k === val) opt.selected = true;
+      el.appendChild(opt);
+    });
+  }
+
+  function handleThemeModeChange(m) { const d = loadLocalData(); d.settings.themeMode = m; saveLocalData(d); applyActiveTheme(); renderThemeSettingsUI(); }
+  function updateMealTimeTheme(slot, key) { const d = loadLocalData(); if(!d.settings.mealThemes) d.settings.mealThemes={}; d.settings.mealThemes[slot] = key; saveLocalData(d); applyActiveTheme(); }
+  function setManualTheme(key) { const d = loadLocalData(); d.settings.manualTheme = key; saveLocalData(d); applyActiveTheme(); }
+
+  function loadThemeIntoEditor(k) {
+    const theme = getAllThemes()[k] || DEFAULT_THEMES['midnight'];
+    document.getElementById('themeEditName').value = theme.name;
+    document.getElementById('themeEditBg').value = theme.bg;
+    document.getElementById('themeEditCardBg').value = theme.cardBg;
+    document.getElementById('themeEditPrimary').value = theme.primary;
+    document.getElementById('themeEditAccent').value = theme.accent;
+    document.getElementById('themeEditText').value = theme.text;
+    document.getElementById('themeEditBorder').value = theme.border;
+    document.getElementById('btnDeleteTheme').style.display = DEFAULT_THEMES.hasOwnProperty(k) ? 'none' : 'inline-block';
+  }
+
+  function saveCustomTheme() {
+    const name = document.getElementById('themeEditName').value.trim();
+    if (!name) return alert('Enter name');
+    const key = 'custom_' + name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const d = loadLocalData();
+    d.customThemes[key] = {
+      name, bg: document.getElementById('themeEditBg').value,
+      cardBg: document.getElementById('themeEditCardBg').value,
+      text: document.getElementById('themeEditText').value,
+      border: document.getElementById('themeEditBorder').value,
+      primary: document.getElementById('themeEditPrimary').value,
+      primaryText: '#000', accent: document.getElementById('themeEditAccent').value
+    };
+    saveLocalData(d); applyActiveTheme(); renderThemeSettingsUI();
+  }
+
+  function deleteCustomTheme() {
+    const key = document.getElementById('themeEditorSelect').value;
+    if (DEFAULT_THEMES[key]) return;
+    const d = loadLocalData(); delete d.customThemes[key];
+    saveLocalData(d); applyActiveTheme(); renderThemeSettingsUI();
+  }
+
+  function switchTab(t) {
+    currentTab = t;
+    ['dashboard', 'pantry', 'manage', 'settings'].forEach(v => {
+      document.getElementById(v + 'View').style.display = t === v ? 'block' : 'none';
+      const btn = document.getElementById('btn' + v.charAt(0).toUpperCase() + v.slice(1,4));
+      if(btn) btn.className = t === v ? 'active-tab' : '';
+    });
+    if (t === 'dashboard') renderDashboard();
+    if (t === 'pantry') { populatePantryCategories(); renderPantryUI(); }
+    if (t === 'manage') { cancelEdit(); renderManageUI(); }
+    if (t === 'settings') renderThemeSettingsUI();
+  }
+
+  function getCurrentMealSlots() {
+    const h = new Date().getHours();
+    return (h >= 6 && h < 11) ? ['Breakfast', 'Lunch', 'Dinner'] : (h >= 11 && h < 16) ? ['Lunch', 'Dinner', 'Breakfast'] : ['Dinner', 'Breakfast', 'Lunch'];
+  }
+
+  function renderDashboard() {
+    const slots = getCurrentMealSlots();
+    const data = loadLocalData();
+    const activeMeals = data.meals.filter(m => !m.isArchived);
+    document.getElementById('activeSlotTitle').innerText = `NEXT UP: ${slots[0]}`;
+
+    const currentPool = activeMeals.filter(m => m.category === slots[0]);
+    if (currentPool.length > 0) {
+      const top = currentPool[0];
+      document.getElementById('activeMealName').innerText = top.name;
+      renderBadges('activeBadgesContainer', top.dietType, top.tags);
+      const prep = document.getElementById('activePrepNote');
+      prep.style.display = top.prepNote ? 'block' : 'none';
+      prep.innerText = top.prepNote ? `📝 Note: ${top.prepNote}` : '';
+    } else {
+      document.getElementById('activeMealName').innerText = "No meals saved";
+      document.getElementById('activeBadgesContainer').innerHTML = '';
+      document.getElementById('activePrepNote').style.display = 'none';
+    }
+
+    const upcoming = document.getElementById('upcomingContainer'); upcoming.innerHTML = '';
+    [slots[1], slots[2]].forEach((slot, idx) => {
+      const pool = activeMeals.filter(m => m.category === slot);
+      const next = pool[0];
+      const card = document.createElement('div'); card.className = 'card';
+      if (next) {
+        card.innerHTML = `<div style="font-size: 11px; color: var(--text-muted);">${slot}</div>
+          <div style="font-weight: bold; margin-top: 4px;">${next.name}</div>
+          <div class="badges-container" id="badges_${next.id}"></div>
+          <div class="card-actions"><button class="primary small" onclick="markMealCookedBySlot(${idx + 1})">✅ Cooked</button><button class="small" onclick="shuffleMealBySlot(${idx + 1})">🔀 Shuffle</button></div>`;
+        upcoming.appendChild(card); renderBadges(`badges_${next.id}`, next.dietType, next.tags);
+      } else {
+        card.innerHTML = `<div style="font-size: 11px; color: var(--text-muted);">${slot}</div><div style="color: var(--text-muted);">No meals</div>`;
+        upcoming.appendChild(card);
+      }
+    });
+  }
+
+  function renderBadges(id, diet, tags = []) {
+    const el = document.getElementById(id); if(!el) return;
+    el.innerHTML = `<span class="badge ${diet}">${diet}</span>`;
+    tags.forEach(t => el.innerHTML += `<span class="badge tag">${t}</span>`);
+  }
+
+  function markMealCookedBySlot(idx) {
+    const target = getCurrentMealSlots()[idx];
+    const d = loadLocalData();
+    const pool = d.meals.filter(m => m.category === target && !m.isArchived);
+    if (!pool.length) return;
+    pool[0].timesCooked = (pool[0].timesCooked || 0) + 1;
+    d.history.unshift({ id: 'log_' + Date.now(), mealName: pool[0].name, category: target, cookedAt: new Date().toLocaleString() });
+    saveLocalData(d); shuffleMealBySlot(idx);
+  }
+
+  function shuffleMealBySlot(idx) {
+    const target = getCurrentMealSlots()[idx];
+    const d = loadLocalData();
+    const pool = d.meals.filter(m => m.category === target && !m.isArchived);
+    if (pool.length > 1) {
+      const mIdx = d.meals.findIndex(m => m.id === pool[0].id);
+      d.meals.push(d.meals.splice(mIdx, 1)[0]);
+      saveLocalData(d); renderDashboard();
+    }
+  }
+
+  function populatePantryCategories(sel = '') {
+    const data = loadLocalData();
+    const select = document.getElementById('pantryCategory');
+    const cats = Array.from(new Set(["Foodgrains, Oil & Masala", "Cleaning & Household", "General", ...data.pantry.map(p => p.category)])).sort();
+    select.innerHTML = '';
+    cats.forEach(c => select.innerHTML += `<option value="${c}" ${c === sel ? 'selected' : ''}>${c}</option>`);
+    select.innerHTML += `<option value="__ADD_NEW__">➕ Add New...</option>`;
+    toggleCustomCategoryInput();
+  }
+
+  function toggleCustomCategoryInput() {
+    const select = document.getElementById('pantryCategory');
+    document.getElementById('customCategoryGroup').style.display = select.value === '__ADD_NEW__' ? 'block' : 'none';
+  }
+
+  function renderPantryUI() {
+  const data = loadLocalData();
+  const list = document.getElementById('pantryItemList'); 
+  list.innerHTML = '';
+
+  // Filter active and archived items
+  let activeItems = data.pantry.filter(p => !p.isArchived);
+  let archivedItems = data.pantry.filter(p => p.isArchived);
+
+  if (!activeItems.length && !archivedItems.length) {
+    return list.innerHTML = '<div style="color: var(--text-muted); font-size: 13px;">Pantry empty.</div>';
+  }
+
+  // Calculate stock percentage ratio for active items
+  activeItems.forEach(i => i.ratio = (Number(i.available) || 0) / (Number(i.required) || 1));
+  
+  // Sort Active Items
+  const sort = document.getElementById('pantrySort').value;
+  if (sort === 'urgency') {
+    activeItems.sort((a,b) => a.ratio - b.ratio);
+  } else if (sort === 'name') {
+    activeItems.sort((a,b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+  } else if (sort === 'category') {
+    activeItems.sort((a,b) => {
+      const catCompare = (a.category || '').localeCompare(b.category || '', undefined, { sensitivity: 'base' });
+      return catCompare === 0 ? (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' }) : catCompare;
+    });
+  }
+
+  // Render Active Pantry Items
+  if (activeItems.length > 0) {
+    activeItems.forEach(i => {
+      const pct = Math.round(i.ratio * 100);
+      const bClass = i.ratio <= 0 ? 'stock-out' : i.ratio < 0.5 ? 'stock-low' : 'stock-full';
+      const fClass = i.ratio <= 0 ? 'fill-out' : i.ratio < 0.5 ? 'fill-low' : 'fill-full';
+      list.innerHTML += `<div class="manage-item">
+        <div class="item-top">
+          <div><strong>${i.name}</strong> <span style="font-size:11px; color:var(--text-muted);">(${i.category})</span><div>Avail: ${i.available} / Req: ${i.required}</div></div>
+          <div><button class="small" onclick="openPantryEdit('${i.id}')">✏️</button> <button class="danger small" onclick="deletePantryItem('${i.id}')">🗑</button></div>
+        </div>
+        <span class="badge ${bClass}">${pct}% Stock</span>
+        <div class="progress-bar-bg"><div class="progress-bar-fill ${fClass}" style="width: ${Math.min(100, Math.max(0, pct))}%;"></div></div>
+      </div>`;
+    });
+  } else {
+    list.innerHTML += '<div style="color: var(--text-muted); font-size: 13px;">No active pantry items.</div>';
+  }
+
+  // Render Archived Pantry Items (if any)
+  if (archivedItems.length > 0) {
+    list.innerHTML += `<div class="section-title" style="margin-top: 16px;">🗑 ARCHIVED PANTRY ITEMS</div>`;
+    archivedItems.forEach(i => {
+      list.innerHTML += `<div class="manage-item">
+        <div class="item-top">
+          <span style="text-decoration: line-through; color: var(--text-muted);">${i.name} (${i.category})</span>
+          <button class="small" onclick="restorePantryItem('${i.id}')">↩️ Restore</button>
+        </div>
+      </div>`;
+    });
+  }
+}
+
+  function handlePantrySave() {
+    const name = document.getElementById('pantryName').value.trim(); if (!name) return;
+    const req = parseFloat(document.getElementById('pantryRequired').value) || 0;
+    const avail = parseFloat(document.getElementById('pantryAvailable').value) || 0;
+    let cat = document.getElementById('pantryCategory').value;
+    if (cat === '__ADD_NEW__') cat = document.getElementById('pantryCustomCategory').value.trim();
+
+    const id = document.getElementById('pantryItemId').value;
+    const d = loadLocalData();
+    if (id) {
+      const item = d.pantry.find(p => p.id === id);
+      if (item) Object.assign(item, { name, category: cat, required: req, available: avail });
+    } else {
+      d.pantry.push({ id: 'pantry_' + Date.now(), name, category: cat, required: req, available: avail, isArchived: false });
+    }
+    saveLocalData(d); cancelPantryEdit(); renderPantryUI();
+  }
+
+  function openPantryEdit(id) {
+    const item = loadLocalData().pantry.find(p => p.id === id); if (!item) return;
+    populatePantryCategories(item.category);
+    document.getElementById('pantryItemId').value = item.id;
+    document.getElementById('pantryName').value = item.name;
+    document.getElementById('pantryRequired').value = item.required;
+    document.getElementById('pantryAvailable').value = item.available;
+    document.getElementById('pantryFormTitle').innerText = '✏️ EDIT ITEM';
+    document.getElementById('cancelPantryBtn').style.display = 'inline-block';
+  }
+
+  function cancelPantryEdit() {
+    document.getElementById('pantryItemId').value = '';
+    document.getElementById('pantryName').value = '';
+    document.getElementById('pantryRequired').value = '';
+    document.getElementById('pantryAvailable').value = '';
+    document.getElementById('pantryFormTitle').innerText = '➕ ADD PANTRY ITEM';
+    document.getElementById('cancelPantryBtn').style.display = 'none';
+    populatePantryCategories();
+  }
+
+  // Soft delete item by setting isArchived flag to true
+function deletePantryItem(id) {
+  const d = loadLocalData();
+  const item = d.pantry.find(p => p.id === id);
+  if (item) {
+    item.isArchived = true;
+    saveLocalData(d);
+    renderPantryUI();
+  }
+}
+
+// Restore soft-deleted item back to active inventory
+function restorePantryItem(id) {
+  const d = loadLocalData();
+  const item = d.pantry.find(p => p.id === id);
+  if (item) {
+    item.isArchived = false;
+    saveLocalData(d);
+    renderPantryUI();
+  }
+}
+
+  // Robust CSV parser handling quotes, commas, and escaped characters
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
+  return lines.map(line => {
+    const row = [];
+    let insideQuote = false;
+    let entry = '';
+
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (char === '"') {
+        // Toggle quote state or handle double quote escape
+        if (insideQuote && line[i + 1] === '"') {
+          entry += '"';
+          i++;
+        } else {
+          insideQuote = !insideQuote;
+        }
+      } else if (char === ',' && !insideQuote) {
+        row.push(entry.trim());
+        entry = '';
+      } else {
+        entry += char;
+      }
+    }
+    row.push(entry.trim());
+    return row;
+  });
+}
+
+function importPantryCSV() {
+  const fileInput = document.getElementById('csvFileInput');
+  const file = fileInput.files[0];
+  if (!file) return alert('Please select a Pantry CSV file to import.');
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const rows = parseCSV(e.target.result);
+      if (rows.length < 2) return alert('CSV file is empty or missing data rows.');
+
+      const data = loadLocalData();
+      let importedCount = 0;
+
+      // Skip header row
+      rows.slice(1).forEach((cols, i) => {
+        const category = cols[0] || 'General';
+        const name = cols[1];
+        const required = parseFloat(cols[2]) || 0;
+        const available = parseFloat(cols[3]) || 0;
+
+        // Ensure item name exists
+        if (name) {
+          data.pantry.push({
+            id: 'p_csv_' + Date.now() + '_' + i,
+            category: category,
+            name: name,
+            required: required,
+            available: available,
+            isArchived: false
+          });
+          importedCount++;
+        }
+      });
+
+      saveLocalData(data);
+      fileInput.value = ''; // Reset input
+      alert(`Successfully imported ${importedCount} pantry items!`);
+      switchTab('pantry');
+    } catch (err) {
+      alert('Failed to parse Pantry CSV file. Please check file format.');
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function importMealsCSV() {
+  const fileInput = document.getElementById('csvMealsFileInput');
+  const file = fileInput.files[0];
+  if (!file) return alert('Please select a Meals CSV file to import.');
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const rows = parseCSV(e.target.result);
+      if (rows.length < 2) return alert('CSV file is empty or missing data rows.');
+
+      const data = loadLocalData();
+      let importedCount = 0;
+
+      // Skip header row
+      rows.slice(1).forEach((cols, i) => {
+        const name = cols[0];
+        const category = cols[1] || 'Dinner';
+        const dietType = (cols[2] && ['veg', 'non-veg', 'egg'].includes(cols[2].toLowerCase())) 
+          ? cols[2].toLowerCase() 
+          : 'veg';
+        const tags = cols[3] ? cols[3].split(';').map(t => t.trim()).filter(Boolean) : [];
+        const prepNote = cols[4] || '';
+
+        if (name) {
+          data.meals.push({
+            id: 'm_csv_' + Date.now() + '_' + i,
+            name: name,
+            category: category,
+            dietType: dietType,
+            tags: tags,
+            prepNote: prepNote,
+            isArchived: false,
+            timesCooked: 0
+          });
+          importedCount++;
+        }
+      });
+
+      saveLocalData(data);
+      fileInput.value = ''; // Reset input
+      alert(`Successfully imported ${importedCount} meals!`);
+      switchTab('manage');
+    } catch (err) {
+      alert('Failed to parse Meals CSV file. Please check file format.');
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+}
+
+  function exportPantryCSV() {
+    const items = loadLocalData().pantry.filter(p => !p.isArchived);
+    let csv = "Category,Item,Required-Stock,Available-Stock\n" + items.map(i => `"${i.category}","${i.name}",${i.required},${i.available}`).join("\n");
+    downloadFile('pantry.csv', csv);
+  }
+
+  function exportMealsCSV() {
+    const meals = loadLocalData().meals.filter(m => !m.isArchived);
+    let csv = "Name,Category,DietType,Tags,PrepNote\n" + meals.map(m => `"${m.name}","${m.category}","${m.dietType}","${(m.tags||[]).join(';')}","${m.prepNote||''}"`).join("\n");
+    downloadFile('meals.csv', csv);
+  }
+
+  function downloadFile(name, content) {
+    const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(content);
+    a.download = name; a.click();
+  }
+
+  function executeTargetedReset() {
+    const d = loadLocalData();
+    if (document.getElementById('chkResetPantry').checked) d.pantry = [];
+    if (document.getElementById('chkResetMeals').checked) d.meals = [];
+    if (document.getElementById('chkResetHistory').checked) d.history = [];
+    saveLocalData(d); switchTab('dashboard');
+  }
+
+  function renderManageUI() {
+    const d = loadLocalData();
+    const active = document.getElementById('activePoolList'); active.innerHTML = '';
+    const history = document.getElementById('historyLogList'); history.innerHTML = '';
+    const archived = document.getElementById('archivedPoolList'); archived.innerHTML = '';
+
+    d.meals.filter(m => !m.isArchived).forEach(m => {
+      active.innerHTML += `<div class="manage-item">
+        <div class="item-top">
+          <div><strong>${m.name}</strong> (${m.category})<div class="badges-container" id="m_bg_${m.id}"></div></div>
+          <div><button class="small" onclick="openEditForm('${m.id}')">✏️</button> <button class="danger small" onclick="softDeleteMeal('${m.id}')">🗑</button></div>
+        </div>
+      </div>`;
+      renderBadges(`m_bg_${m.id}`, m.dietType, m.tags);
+    });
+
+    d.history.slice(0, 5).forEach(h => {
+      history.innerHTML += `<div class="manage-item"><div><strong>${h.mealName}</strong> (${h.category})<div>Cooked: ${h.cookedAt}</div></div></div>`;
+    });
+
+    d.meals.filter(m => m.isArchived).forEach(m => {
+      archived.innerHTML += `<div class="manage-item"><div class="item-top"><span style="text-decoration:line-through;">${m.name}</span><button class="small" onclick="restoreMeal('${m.id}')">↩️ Restore</button></div></div>`;
+    });
+  }
+
+  function handleFormAdd() {
+    const name = document.getElementById('inputName').value.trim(); if (!name) return;
+    const d = loadLocalData();
+    d.meals.push({
+      id: 'm_' + Date.now(), name,
+      category: document.getElementById('inputCategory').value,
+      dietType: document.getElementById('inputDiet').value,
+      tags: document.getElementById('inputTags').value.split(',').map(t => t.trim()).filter(Boolean),
+      prepNote: document.getElementById('inputPrep').value.trim(),
+      isArchived: false, timesCooked: 0
+    });
+    saveLocalData(d); document.getElementById('inputName').value = ''; renderManageUI();
+  }
+
+  function openEditForm(id) {
+    const m = loadLocalData().meals.find(x => x.id === id); if (!m) return;
+    document.getElementById('editMealId').value = m.id;
+    document.getElementById('editName').value = m.name;
+    document.getElementById('editCategory').value = m.category;
+    document.getElementById('editDiet').value = m.dietType;
+    document.getElementById('editTags').value = (m.tags || []).join(', ');
+    document.getElementById('editPrep').value = m.prepNote || '';
+    document.getElementById('editFormContainer').style.display = 'block';
+    document.getElementById('addFormContainer').style.display = 'none';
+  }
+
+  function cancelEdit() {
+    document.getElementById('editFormContainer').style.display = 'none';
+    document.getElementById('addFormContainer').style.display = 'block';
+  }
+
+  function handleFormUpdate() {
+    const id = document.getElementById('editMealId').value;
+    const d = loadLocalData();
+    const m = d.meals.find(x => x.id === id);
+    if (m) {
+      m.name = document.getElementById('editName').value.trim();
+      m.category = document.getElementById('editCategory').value;
+      m.dietType = document.getElementById('editDiet').value;
+      m.tags = document.getElementById('editTags').value.split(',').map(t => t.trim()).filter(Boolean);
+      m.prepNote = document.getElementById('editPrep').value.trim();
+      saveLocalData(d); cancelEdit(); renderManageUI();
+    }
+  }
+
+  function softDeleteMeal(id) { const d = loadLocalData(); const m = d.meals.find(x => x.id === id); if (m) { m.isArchived = true; saveLocalData(d); renderManageUI(); } }
+  function restoreMeal(id) { const d = loadLocalData(); const m = d.meals.find(x => x.id === id); if (m) { m.isArchived = false; saveLocalData(d); renderManageUI(); } }
+  function toggleAccordion(btn) {
+  const item = btn.parentElement;
+  item.classList.toggle('open');
+}
+
+</script>
+</body>
+</html>
