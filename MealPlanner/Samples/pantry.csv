@@ -1,0 +1,186 @@
+Category,Item,Required-Stock,Available-Stock
+"Cleaning & Household","Agarbatti",50,50
+"Gourmet & World Food","Ajinomoto",50,20
+"Foodgrains, Oil & Masala","Almonds",250,250
+"Cleaning & Household","Aluminium Foil",1,0.25
+"Foodgrains, Oil & Masala","Atta",1000,2000
+"Gourmet & World Food","Ajinomoto",50,20
+"Foodgrains, Oil & Masala","Ajwain",50,50
+"Foodgrains, Oil & Masala","Almonds",250,500
+"Foodgrains, Oil & Masala","Amchur",50,100
+"Snacks & Branded Foods","Apple Cider Vinegar",100,200
+"Foodgrains, Oil & Masala","Atta",1000,2000
+"zFruits & Vegetables","Avocado",1,0
+"Bakery, Cakes & Dairy","Baking Powder",50,50
+"Bakery, Cakes & Dairy","Baking Soda",50,50
+"Foodgrains, Oil & Masala","Basil Dry",10,10
+"Foodgrains, Oil & Masala","Basmati Rice",1000,1500
+"Beauty & Hygiene","Bath Soap",4,8
+"Cleaning & Household","Bathroom Freshner",4,2
+"Foodgrains, Oil & Masala","Bay Leaf",100,100
+"zFruits & Vegetables","Beans",100,50
+"Foodgrains, Oil & Masala","Besan",250,250
+"Foodgrains, Oil & Masala","Biryani Flower",25,25
+"Foodgrains, Oil & Masala","Biryani Kit",0,0
+"Snacks & Branded Foods","Biscuits",100,100
+"Foodgrains, Oil & Masala","Black Chana",0,0
+"Foodgrains, Oil & Masala","Black Pepper",50,50
+"Beauty & Hygiene","Body Wash",200,250
+"Beverages","Boost",5,5
+"zBaby Care","Bottle Brush",0,1
+"Bakery, Cakes & Dairy","Bread",0,0
+"Bakery, Cakes & Dairy","Butter",100,50
+"zFruits & Vegetables","Capsicum Green",0,1
+"zFruits & Vegetables","Capsicum Mix",0,2
+"zFruits & Vegetables","Carrot",0,0
+"Foodgrains, Oil & Masala","Cashew",250,500
+"Foodgrains, Oil & Masala","Chana Dal",250,50
+"Foodgrains, Oil & Masala","Chana Kabuli",250,500
+"Bakery, Cakes & Dairy","Cheese Cubes",4,4
+"Bakery, Cakes & Dairy","Cheese Feta",50,50
+"Bakery, Cakes & Dairy","Cheese Parmesan",0,0
+"Snacks & Branded Foods","Chewing Gum",0,0
+"Foodgrains, Oil & Masala","Chia Seeds",50,200
+"Foodgrains, Oil & Masala","Chicken Masala Powder",50,150
+"Foodgrains, Oil & Masala","Cinnamon Sticks",25,0
+"Foodgrains, Oil & Masala","Citric Acid",10,10
+"Cleaning & Household","Clear Wrap",1,0.5
+"Foodgrains, Oil & Masala","Cloves",50,20
+"Bakery, Cakes & Dairy","Cocoa Powder",50,50
+"zFruits & Vegetables","Coconut",0,0
+"Gourmet & World Food","Coconut Milk Powder",1,2.5
+"Beverages","Coffee Powder",250,250
+"zFruits & Vegetables","Colocasia",0,0
+"Beauty & Hygiene","Conditioner",200,100
+"Foodgrains, Oil & Masala","Corn Flour",250,500
+"Foodgrains, Oil & Masala","Corn Seeds",50,200
+"Foodgrains, Oil & Masala","Cranberry Dry",50,100
+"zFruits & Vegetables","Cucumber",0,0
+"Bakery, Cakes & Dairy","Curd",0,200
+"Bakery, Cakes & Dairy","Custard Powder",100,100
+"Foodgrains, Oil & Masala","Dalia",500,100
+"Snacks & Branded Foods","Dark Soy Sauce",100,50
+"Foodgrains, Oil & Masala","Dates",250,500
+"Foodgrains, Oil & Masala","Dates Syrup",250,450
+"Cleaning & Household","Detergent Bar",0,0
+"Cleaning & Household","Detergent Powder",0,0
+"Cleaning & Household","Detergent Top Load",500,50
+"Foodgrains, Oil & Masala","Dhaniya (Coriander)",250,500
+"Cleaning & Household","Dishwash Bar",0,0
+"Cleaning & Household","Dishwash Liquid",250,1000
+"Foodgrains, Oil & Masala","Dry Chilli",100,150
+"Foodgrains, Oil & Masala","Dry Coconut",100,0
+"Eggs, Meat & Fish","Dry Fish",0,0
+"Bakery, Cakes & Dairy","Dry Yeast",25,25
+"Eggs, Meat & Fish","Eggs",6,6
+"Foodgrains, Oil & Masala","Elaichi (Cardamom)",25,25
+"Beauty & Hygiene","Facewash",100,100
+"Bakery, Cakes & Dairy","Fresh Cream",100,0
+"Foodgrains, Oil & Masala","Gehun (Wheat)",250,1000
+"Foodgrains, Oil & Masala","Ghee",250,1000
+"zFruits & Vegetables","Ginger",0,500
+"Snacks & Branded Foods","Green Chilli Sauce",100,60
+"Foodgrains, Oil & Masala","Green Moong",250,250
+"Beverages","Green Tea",50,200
+"Snacks & Branded Foods","Hakka Noodles",500,600
+"Foodgrains, Oil & Masala","Haldi (Turmeric)",100,150
+"Beauty & Hygiene","Handwash Liquid",500,1250
+"Beauty & Hygiene","Handwash Powder",2,1
+"Foodgrains, Oil & Masala","Honey",250,750
+"Beverages","Horlicks",2,8
+"Gourmet & World Food","Icecream",0,1
+"Foodgrains, Oil & Masala","Idli Rava",250,1000
+"Foodgrains, Oil & Masala","Imli (Tamarind)",100,200
+"Foodgrains, Oil & Masala","Jaggery",250,350
+"Foodgrains, Oil & Masala","Jaggery Powder",250,750
+"Foodgrains, Oil & Masala","Jeera",100,450
+"Foodgrains, Oil & Masala","Kabab Chini",25,25
+"Beverages","Kahwa Tea",50,100
+"Beverages","Kala Khatta Syrup",250,700
+"Foodgrains, Oil & Masala","Kalonji",25,100
+"Foodgrains, Oil & Masala","Kashmirilal",100,150
+"Foodgrains, Oil & Masala","Kasuri Methi",50,60
+"Snacks & Branded Foods","Ketchup",100,500
+"Foodgrains, Oil & Masala","Kismis (Raisins)",100,75
+"Foodgrains, Oil & Masala","Lobhia",250,0
+"Beauty & Hygiene","Lotion",200,250
+"Snacks & Branded Foods","Maggi",4,5
+"Foodgrains, Oil & Masala","Maida",500,1000
+"Foodgrains, Oil & Masala","Makai Atta",250,0
+"Foodgrains, Oil & Masala","Makhana",100,100
+"Foodgrains, Oil & Masala","Masoor Dal",250,500
+"Foodgrains, Oil & Masala","Matar",100,100
+"Cleaning & Household","Matchbox Big",1,1
+"Cleaning & Household","Matchbox Small",5,2
+"Snacks & Branded Foods","Mayo",100,100
+"Foodgrains, Oil & Masala","Methi Seeds",50,90
+"Bakery, Cakes & Dairy","Milkshake",1,2
+"Foodgrains, Oil & Masala","Mirchi Powder",50,50
+"Foodgrains, Oil & Masala","Moong Dal",500,1250
+"zFruits & Vegetables","Muli",0,0
+"Foodgrains, Oil & Masala","Muri",100,500
+"zFruits & Vegetables","Mushroom",0,0
+"Foodgrains, Oil & Masala","Mustard Big",50,50
+"Foodgrains, Oil & Masala","Mustard Small",100,250
+"Gourmet & World Food","Nachos",0,0
+"Snacks & Branded Foods","Oats",200,1500
+"Foodgrains, Oil & Masala","Oil Groundnut",0,0
+"Foodgrains, Oil & Masala","Oil Pooja",0,0
+"Foodgrains, Oil & Masala","Oil Refined Sunflower",2,0.5
+"Foodgrains, Oil & Masala","Olive Oil",100,150
+"zFruits & Vegetables","Onion",0,50
+"Foodgrains, Oil & Masala","Oregano Dry",50,150
+"Foodgrains, Oil & Masala","Pad Thai Noodles",0,0
+"zFruits & Vegetables","Palak",0,50
+"Bakery, Cakes & Dairy","Paneer",200,100
+"Gourmet & World Food","Pasta (General)",500,1000
+"Gourmet & World Food","Pasta Spaghetti",500,100
+"Bakery, Cakes & Dairy","Pav",1,1
+"Foodgrains, Oil & Masala","Peanuts",100,250
+"Cleaning & Household","Plates Disposable",0,0
+"Foodgrains, Oil & Masala","Poha",500,1000
+"Foodgrains, Oil & Masala","Posta",50,25
+"zFruits & Vegetables","Potato",0,500
+"Snacks & Branded Foods","Potato Chips",0,0
+"Foodgrains, Oil & Masala","Powder Hing",50,50
+"Foodgrains, Oil & Masala","Prunes",100,250
+"zFruits & Vegetables","Pumpkin Cut",0,0
+"Foodgrains, Oil & Masala","Putnalu",100,250
+"Foodgrains, Oil & Masala","Ragi Flour",250,1500
+"Foodgrains, Oil & Masala","Rajma",250,350
+"Cleaning & Household","Rat Trap",1,1
+"Foodgrains, Oil & Masala","Rice Brown",0,0
+"Foodgrains, Oil & Masala","Rice Noodles",250,500
+"Foodgrains, Oil & Masala","Rice Powder",100,25
+"Foodgrains, Oil & Masala","Roasted Chana",100,500
+"Foodgrains, Oil & Masala","Sabudana",100,0
+"Foodgrains, Oil & Masala","Salt",1000,750
+"Foodgrains, Oil & Masala","Salt Crystals",1,1
+"Foodgrains, Oil & Masala","Saunf (Fennel)",50,200
+"Foodgrains, Oil & Masala","Sesame Seeds",100,100
+"Foodgrains, Oil & Masala","Shahi Biryani Masala",50,100
+"Foodgrains, Oil & Masala","Shahi Jeera",25,25
+"Beauty & Hygiene","Shampoo",200,250
+"Foodgrains, Oil & Masala","Sooji",250,500
+"Snacks & Branded Foods","Soup",2,2
+"Foodgrains, Oil & Masala","Soya Granules",100,100
+"Foodgrains, Oil & Masala","Soya Mini",250,250
+"zFruits & Vegetables","Spring Onion",0,0
+"Snacks & Branded Foods","Strawberry Syrup",25,0
+"Foodgrains, Oil & Masala","Sugar",250,1000
+"zFruits & Vegetables","Sweet Corn",0,0
+"Beverages","Tea",250,500
+"Cleaning & Household","Toilet Cleaner",500,500
+"Cleaning & Household","Toilet Paper",10,8
+"zFruits & Vegetables","Tomato",0,500
+"Foodgrains, Oil & Masala","Toor Dal",250,250
+"Beauty & Hygiene","Toothbrush",4,4
+"Beauty & Hygiene","Toothpaste",2,3
+"Foodgrains, Oil & Masala","Urad Black",500,1100
+"Foodgrains, Oil & Masala","Urad Gota",100,500
+"Snacks & Branded Foods","Vermicelli",500,450
+"Snacks & Branded Foods","Vinegar",100,200
+"Foodgrains, Oil & Masala","Walnut",0,0
+"Bakery, Cakes & Dairy","Whipping Cream Powder",50,50
+"Foodgrains, Oil & Masala","White Pepper",50,100
+"Gourmet & World Food","Yogurt",0,0
