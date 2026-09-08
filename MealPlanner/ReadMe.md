@@ -22,8 +22,32 @@ The application is fully contained within a single `index.html` file, requiring 
 ```text
 ├── index.html          # Single-file HTML/CSS/JS application
 └── README.md           # Project documentation
+```
 
 ## 🚀 Getting Started
 1. Download or clone the repository containing `index.html`.
 2. Double-click `index.html` or open it directly in any modern web browser (Chrome, Firefox, Safari, Edge).
 3. The app will initialize with default test data automatically.
+
+## 📖 CSV Data Formats
+### Pantry CSV Export/Import Format
+```
+Category,Item,Required-Stock,Available-Stock
+"Foodgrains, Oil & Masala","Rice",1000,500
+"General","Salt",2,1
+```
+
+### Meals CSV Export/Import Format
+```
+Name,Category,DietType,Tags,PrepNote
+"Oatmeal & Berries","Breakfast","veg","Quick;Healthy",""
+"Paneer Masala & Roti","Dinner","veg","Festive","Soak paneer"
+```
+
+## 🎨 Auto-Theme Schedule
+* Breakfast Slot: 6:00 AM – 11:00 AM
+* Lunch Slot: 11:00 AM – 4:00 PM
+* Dinner Slot: 4:00 PM – 6:00 AM
+
+## 🔮 Future Enhancements
+Firebase Authentication and Cloud Firestore integration for multi-device real-time sync.
